@@ -6,7 +6,7 @@
 
 * [First Three.js Project](basics/first-three.js-project.md)
 * [Transform objects](basics/transform-objects.md)
-* [Page](basics/page.md)
+* [Animations](basics/animations.md)
 
 ***
 
