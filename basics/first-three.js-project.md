@@ -92,9 +92,9 @@ scene.add(mesh);
 
 시야각은 시야의 각도가 얼마나 큰지를 나타냅니다. 매우 큰 각도를 사용하면, 한 번에 모든 방향을 볼 수 있지만, 결과가 작은 사각형에 그려지기 때문에 많은 왜곡이 발생합니다. 작은 각도를 사용하면, 물체들이 확대된 것처럼 보일 것입니다. 시야각(fov)는 도로 포현되며, 수직 시야각에 해당합니다. 여기서는 75도 각을 사용할 것입니다.
 
-<figure><img src="broken-reference" alt=""><figcaption><p><strong>시야각이 너무 큰 경우</strong> </p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>시야각이 큰 경우</p></figcaption></figure>
 
-<figure><img src="broken-reference" alt=""><figcaption><p><strong>시야각이 너무 작은 경우</strong> </p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>시야각이 작은 경우</p></figcaption></figure>
 
 2. 화면 비율 (aspect ratio)
 
@@ -155,7 +155,7 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.render(scene, camera);
 ```
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 하지만 검은 화면만 보이고 빨간색 큐브는 보이지 않습니다.
 
@@ -173,7 +173,7 @@ camera.position.z = 3;
 scene.add(camera);
 ```
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 
 이제 빨간색 사각형을 볼 수 있으며, 그 이유는 카메라가 큐브와 완벽하게 정렬되어 있어서 한 면만 볼 수 있기 때문입니다.
 

@@ -29,7 +29,7 @@ mesh.position.y = -0.6
 mesh.position.z = 1
 ```
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
 
 **`position`** 속성은 단순한 객체가 아닙니다. **Vector3** 클래스의 인스턴스입니다. 이 클래스에는 **`x, y, z`** 속성 뿐 아니라 많은 메서드들이 있습니다.
 
@@ -72,7 +72,7 @@ const axesHelper = new THREE.AxesHelper(2)
 scene.add(axesHelper)
 ```
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 녹색선은 y축 빨간색선은 x축에 해당하며 z축에 해당하는 파란색선도 있지만, 카메라와 완벽하게 정렬되어 있어서 볼 수 없습니다.
 
@@ -88,7 +88,7 @@ mesh.scale.y = 0.25
 mesh.scale.z = 0.5
 ```
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 아쉽지만, **`mesh`**가 카메라를 향하고 있기 때문에 z축의 변화를 확인 할 수 없습니다.
 
@@ -119,7 +119,7 @@ mesh.rotation.x = Math.PI * 0.25
 mesh.rotation.y = Math.PI * 0.25
 ```
 
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 쉽나요? 하지만 이러한 회전을 조합하면 이상한 결과가 나올 수 있습니다. 왜냐하면 x축을 회전시키면서 다른 축들의 방향도 변경하기 때문입니다. 회전은 다음 순서로 적용됩니다: x, y 그리고 z. 이것은 기존 축들 때문에 한 축이 더 이상 효과가 없게 되는 것처럼 이상한 동작들을 초래할 수 있는데 이를 gimbal lock(짐벌 락)이라고 합니다.
 
@@ -168,7 +168,7 @@ mesh.rotation.x = Math.PI * 0.25
 mesh.rotation.y = Math.PI * 0.25
 ```
 
-<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
 
 ## Scene Graph
 
