@@ -1,2 +1,2 @@
-# Page
+# Three.js Journey
 
