@@ -243,3 +243,124 @@ tick()
 <figure><img src="../.gitbook/assets/0071-ezgif.com-video-to-gif-converter.gif" alt=""><figcaption></figcaption></figure>
 
 카메라를 제어하기 위한 좋은 시작점이긴 하지만, Three.js에는 이와 동일하게, 그리고 더 많은 것을 할 수 있도록 도와주는 '컨트롤'이라고 불리는 여러 클래스가 통합되어 있습니다.
+
+## Built-in controls (내장 컨트롤)
+
+* DeviceOrientationControls
+
+DeviceOrientationControls는 장치, 운영 체제, 브라우저가 허용하는 경우 자동으로 장치의 방향을 검색하고 그에 따라 카메라를 회전시킵니다. 적절한 장비가 있다면 몰입감 있는 우주나 VR 경험을 만들기 위해 사용할 수 있습니다.
+
+* FlyControls
+
+FlyControls는 우주선에 탑승한 것처럼 카메라를 이동할 수 있게 해줍니다. 모든 3축에서 회전하고, 전진하고 후진할 수 있습니다.
+
+* FirstPersonControls
+
+FirstPersonControls는 FlyControls와 비슷하지만, 위쪽 축이 고정되어 있습니다. 이것은 새가 날아다니는 뷰처럼 보이지만, 새가 배럴 롤을 할 수 없는 것과 같습니다. FirstPersonControls에 "FirstPerson"이 들어가긴 하지만, FPS 게임처럼 작동하지는 않습니다.
+
+* PointerLockControls
+
+PointerLockControls는 포인터 잠금 자바스크립트 API를 사용합니다. 이 API는 커서를 숨기고, 중앙에 고정시키며, mousemove 이벤트 콜백에서 움직임을 계속 전송합니다. 이 API를 사용하면 브라우저 내에서 FPS 게임을 만들 수 있습니다. 이 클래스는 그러한 상호 작용을 만들고 싶을 때 매우 유망해 보일 수 있지만, 포인터가 잠긴 경우에만 카메라 회전을 처리합니다. 카메라 위치와 게임 물리는 직접 처리해야 합니다.
+
+* ObritControls
+
+OrbitControls는 이전 수업에서 만든 컨트롤과 매우 유사합니다. 마우스 왼쪽 버튼으로 포인트 주변을 회전하고, 마우스 오른쪽 버튼을 사용하여 측면으로 이동하고, 휠을 사용하여 확대 또는 축소할 수 있습니다.
+
+* TrackballControls
+
+TrackballControls는 OrbitControls와 같지만, 수직 각도에 대한 제한이 없습니다. 장면이 뒤집혀도 계속 회전하고 카메라로 스핀을 할 수 있습니다.
+
+* TransformControls
+
+TransformControls는 카메라와 관련이 없습니다. 객체를 이동하기 위해 객체에 기즈모를 추가하는 데 사용할 수 있습니다.
+
+* DragControls
+
+TransformControls와 마찬가지로, DragControls는 카메라와 관련이 없습니다. 카메라를 향하는 평면에서 객체를 드래그 앤 드롭하여 이동할 수 있습니다.
+
+**우리는 OrbitControls만 사용할 것이지만, 다른 클래스들을 테스트해 보는 것도 좋습니다.**
+
+## OrbitControls
+
+**`tick`** 함수에서 카메라를 업데이트하는 부분을 주석 처리합시다.
+
+### Instantiating (인스터스화)
+
+먼저, **`OrbitControls`** 클래스를 사용하여 변수를 인스턴스화해야 합니다. 여기서 **`THREE.OrbitControls`**를 사용할 수 있다고 생각할 수도 있지만, 안타깝게도 그렇지 않습니다.
+
+**`OrbitControls`** 클래스는 **`THREE`** 변수에서 기본적으로 사용할 수 없는 클래스들 중 하나입니다. 이 결정은 라이브러리의 크기를 줄이기 위한 것입니다.&#x20;
+
+**`OrbitControls`** 클래스가 **`THREE`** 변수에서 사용할 수 없을 수도 있지만, 여전히 의존성 폴더 안에 위치하고 있습니다. 이를 가져오려면, **`/node_modules/`** 폴더 내부에서의 경로를 제공해야 합니다. 즉, **`/three/examples/jsm/controls/OrbitControls.js`**입니다:
+
+```javascript
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+```
+
+이제 **`OrbitControls`** 클래스를 사용하여 변수를 인스턴스화할 수 있습니다(**`THREE.`** 없이). 그리고 이 작업은 카메라를 생성한 후에 해야 합니다.
+
+이것이 작동하려면, 파라미터로 카메라와 마우스 이벤트를 처리할 페이지 내의 요소를 제공해야 합니다:
+
+```javascript
+// 컨트롤
+const controls = new OrbitControls(camera, canvas)
+```
+
+<figure><img src="../.gitbook/assets/008-ezgif.com-video-to-gif-converter.gif" alt=""><figcaption></figcaption></figure>
+
+이제 마우스 왼쪽 버튼이나 오른쪽 버튼을 사용하여 드래그 앤 드롭을 하거나, 스크롤을 올리거나 내려서 확대하거나 축소할 수 있습니다.
+
+우리가 만든 사용자 지정 코드보다 훨씬 쉽고, 더 많은 컨트롤을 제공합니다. 하지만 조금 더 나아가 봅시다.
+
+### Target (목표)
+
+기본적으로 카메라는 장면의 중심을 바라보고 있습니다. 이를 **`target`** 속성으로 변경할 수 있습니다.
+
+이 속성은 **`Vector3`**이므로, 그 x, y, z 속성을 변경할 수 있습니다.
+
+기본적으로 **`OrbitControls`**가 큐브 위를 바라보게 하려면, y 속성을 증가시키기만 하면 됩니다:
+
+```javascript
+controls.target.y = 2
+```
+
+하지만 이것만으로는 작동하지 않습니다. 왜냐하면 **`OrbitControl`**에 자신을 업데이트하라고 알려줘야 하기 때문입니다. 그리고 이는 바로 다음에 **`update`** 메소드를 호출함으로써 할 수 있습니다:
+
+```javascript
+controls.target.y = 2
+controls.update()
+```
+
+하지만 이는 우리의 경우에 그다지 유용하지 않으므로, 이 부분은 주석 처리합시다.
+
+### Damping (댐핑)
+
+OrbitControls의 문서를 읽어보면, damping에 대한 언급이 있습니다. 댐핑은 일종의 가속도와 마찰 공식을 추가하여 애니메이션을 부드럽게 만듭니다.
+
+댐핑을 활성화하려면, **`controls`**의 **`enableDamping`** 속성을 **`true`**로 설정합니다.
+
+제대로 작동하려면, **`controls.update()`**를 호출하여 매 프레임마다 컨트롤을 업데이트해야 합니다. 이는 **`tick`** 함수에서 할 수 있습니다:
+
+```javascript
+// 컨트롤
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
+
+// ...
+
+const tick = () =>
+{
+    // ...
+
+    // 컨트롤 업데이트
+    controls.update()
+
+    // ...
+}
+
+```
+
+<figure><img src="../.gitbook/assets/009-ezgif.com-video-to-gif-converter.gif" alt=""><figcaption></figcaption></figure>
+
+이제 컨트롤이 훨씬 부드러워진 것을 볼 수 있습니다.
+
+회전 속도, 줌 속도, 줌 제한, 각도 제한, 댐핑 강도, 키 바인딩(키보드도 사용할 수 있습니다)과 같이 컨트롤을 사용자 정의할 수 있는 많은 다른 메소드와 속성을 사용할 수 있습니다.
