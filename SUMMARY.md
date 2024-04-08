@@ -8,3 +8,4 @@
 * [Transform objects](basics/transform-objects.md)
 * [Animations](basics/animations.md)
 * [Cameras](basics/cameras.md)
+* [Fullscreen and Resizing](basics/fullscreen-and-resizing.md)
