@@ -9,3 +9,4 @@
 * [Animations](basics/animations.md)
 * [Cameras](basics/cameras.md)
 * [Fullscreen and Resizing](basics/fullscreen-and-resizing.md)
+* [Geometries](basics/geometries.md)
