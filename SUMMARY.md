@@ -10,3 +10,4 @@
 * [Cameras](basics/cameras.md)
 * [Fullscreen and Resizing](basics/fullscreen-and-resizing.md)
 * [Geometries](basics/geometries.md)
+* [Debug UI](basics/debug-ui.md)
