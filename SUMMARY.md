@@ -11,3 +11,4 @@
 * [Fullscreen and Resizing](basics/fullscreen-and-resizing.md)
 * [Geometries](basics/geometries.md)
 * [Debug UI](basics/debug-ui.md)
+* [Textures](basics/textures.md)
