@@ -389,8 +389,151 @@ colorTexture.center.y = 0.5
 
 ### Filtering and Mipmapping&#x20;
 
+큐브의 윗면을 바라볼 때, 이 면이 거의 숨겨져 있을 때, 매우 흐릿한 텍스처를 볼 수 있습니다.
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/018.png" alt="" width="375"><figcaption></figcaption></figure>
+
 이는 필터링과 밉맵핑(mipmapping) 때문입니다.
 
 밉맵핑은 텍스처의 반으로 줄인 작은 버전을 계속 만드는 기술로, 1x1 텍스처를 얻을 때까지 반복합니다. 이러한 모든 텍스처 변형들은 GPU에 전송되며, GPU는 가장 적절한 버전의 텍스처를 선택합니다.
 
 Three.js와 GPU는 이미 이 모든 것을 처리하고 있으며, 사용할 필터 알고리즘을 설정하기만 하면 됩니다. 필터 알고리즘에는 두 가지 유형이 있습니다: 축소 필터(minification filter)와 확대 필터(magnification filter).
+
+#### Minification filter
+
+축소 필터는 텍스처의 픽셀이 렌더링의 픽셀보다 작을 때 발생합니다. 즉, 텍스처가 커버하는 표면에 비해 너무 큰 경우입니다.
+
+minFilter 속성을 사용하여 텍스처의 축소 필터를 변경할 수 있습니다.
+
+6가지 가능한 값이 있습니다:
+
+* THREE.NearestFilter
+* THREE.LinearFilter
+* THREE.NearestMipmapNearestFilter
+* THREE.NearestMipmapLinearFilter
+* THREE.LinearMipmapNearestFilter
+* THREE.LinearMipmapLinearFilter
+
+기본값은 THREE.LinearMipmapLinearFilter입니다. 텍스처의 모습에 만족하지 않는다면, 다른 필터를 시도해야 합니다.
+
+모든 필터를 살펴보진 않겠지만, 매우 다른 결과를 나타내는 THREE.NearestFilter를 테스트할 것입니다:
+
+```javascript
+colorTexture.minFilter = THREE.NearestFilter
+```
+
+<figure><img src="../.gitbook/assets/ezgif.com-video-to-gif-converter (4).gif" alt=""><figcaption></figcaption></figure>
+
+픽셀 비율이 1보다 큰 장치를 사용하는 경우 큰 차이를 보지 못할 수 있습니다. 그렇지 않다면, 카메라를 이 면이 거의 숨겨진 위치에 두면 더 많은 디테일과 이상한 아티팩트(artifacts)를 볼 수 있어야 합니다.
+
+/static/textures/ 폴더에 위치한 checkerboard-1024x1024.png 텍스처로 테스트하면, 이러한 아티팩트를 더 명확하게 볼 수 있습니다:
+
+```javascript
+const colorTexture = textureLoader.load('/textures/checkerboard-1024x1024.png')
+```
+
+<figure><img src="../.gitbook/assets/ezgif.com-video-to-gif-converter (5).gif" alt=""><figcaption></figcaption></figure>
+
+보이는 아티팩트는 모아레 패턴이라고 하며, 보통 이를 피하려고 합니다.
+
+#### Magification filter
+
+확대 필터는 축소 필터와 마찬가지로 작동하지만, 텍스처의 픽셀이 렌더링의 픽셀보다 클 때 적용됩니다. 즉, 텍스처가 커버하는 표면에 비해 너무 작은 경우입니다.
+
+static/textures/ 폴더에도 위치한 checkerboard-8x8.png 텍스처를 사용하여 결과를 볼 수 있습니다:
+
+```javascript
+const colorTexture = textureLoader.load('/textures/checkerboard-8x8.png')
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/021.png" alt="" width="375"><figcaption></figcaption></figure>
+
+텍스처가 매우 작은 텍스처를 매우 큰 표면에 사용하기 때문에 전부 흐려집니다.
+
+이것이 끔찍해 보일 수도 있지만, 아마도 최선일 것입니다. 효과가 너무 과장되지 않는다면, 사용자는 아마도 이를 전혀 알아채지 못할 것입니다.
+
+magFilter 속성을 사용하여 텍스처의 확대 필터를 변경할 수 있습니다.
+
+가능한 값은 두 가지뿐입니다:
+
+* THREE.NearestFilter
+* THREE.LinearFilter
+
+기본값은 THREE.LinearFilter입니다.
+
+THREE.NearestFilter를 테스트해 보면, 기본 이미지가 보존되고 픽셀화된 텍스처를 얻게 됩니다:
+
+```javascript
+colorTexture.magFilter = THREE.NearestFilter
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/022.png" alt="" width="375"><figcaption></figcaption></figure>
+
+픽셀화된 텍스처를 사용하는 마인크래프트 스타일을 목표로 한다면 이는 유리할 수 있습니다.
+
+static/textures/ 폴더에 위치한 minecraft.png 텍스처를 사용하여 결과를 볼 수 있습니다:
+
+```javascript
+const colorTexture = textureLoader.load('/textures/minecraft.png')
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/023.png" alt="" width="375"><figcaption></figcaption></figure>
+
+모든 필터에 대한 마지막 말은 THREE.NearestFilter가 다른 것들보다 더 간단(?)하며, 이를 사용할 때 더 나은 성능을 얻을 수 있다는 것입니다.
+
+minFilter 속성에만 미핑맵을 사용하세요. THREE.NearestFilter를 사용한다면 미핑맵이 필요 없으며, `colorTexture.generateMipmaps = false`로 미핑맵 생성을 비활성화할 수 있습니다:
+
+```javascript
+colorTexture.generateMipmaps = false
+colorTexture.minFilter = THREE.NearestFilter
+```
+
+이렇게 하면 GPU의 부하를 약간 줄일 수 있습니다.
+
+텍스처 형식과 최적화 텍스처를 준비할 때, 3가지 중요한 요소를 염두에 두어야 합니다:
+
+* 무게
+* 크기(또는 해상도)
+* 데이터
+
+#### &#x20;The weight
+
+웹사이트를 방문하는 사용자들이 이러한 텍스처를 다운로드해야 한다는 것을 잊지 마세요. .jpg(손실 압축이지만 보통 가벼움) 또는 .png(무손실 압축이지만 보통 무거움)와 같은 웹에서 사용하는 대부분의 이미지 유형을 사용할 수 있습니다.
+
+가능한 한 가벼우면서도 수용 가능한 이미지를 얻기 위해 일반적인 방법을 적용하세요. TinyPNG(또한 jpg와 함께 작동)와 같은 압축 웹사이트나 소프트웨어를 사용할 수 있습니다.
+
+#### The size&#x20;
+
+사용하는 텍스처의 각 픽셀은 이미지의 무게와 관계없이 GPU에 저장되어야 합니다. 그리고 하드 드라이브처럼 GPU에도 저장 공간에 제한이 있습니다. 자동 생성된 미핑맵은 저장해야 할 픽셀의 수를 증가시키기 때문에 문제가 더욱 심각합니다.
+
+이미지 크기를 가능한 한 줄이려고 노력하세요.
+
+미핑맵에 대해 언급했듯이, Three.js는 1x1 텍스처가 될 때까지 텍스처의 반으로 크기를 줄일 것입니다. 그렇기 때문에 텍스처의 너비와 높이는 2의 거듭제곱이어야 합니다. 이는 Three.js가 텍스처 크기를 2로 나눌 수 있도록 하기 위해 필수적입니다.
+
+예: 512x512, 1024x1024 또는 512x2048
+
+512, 1024, 2048은 1에 도달할 때까지 2로 나눌 수 있습니다.
+
+2의 거듭제곱이 아닌 너비나 높이를 가진 텍스처를 사용하는 경우, Three.js는 가장 가까운 2의 거듭제곱 숫자로 늘리려고 시도할 것이며, 이는 시각적으로 좋지 않은 결과를 초래할 수 있고 콘솔에 경고가 표시될 것입니다.
+
+#### The data&#x20;
+
+아직 테스트하지 않았지만, 텍스처는 투명도를 지원합니다. 아시다시피, jpg 파일은 알파 채널이 없으므로 png를 사용하는 것이 좋을 수 있습니다.
+
+또는 미래의 수업에서 볼 알파 맵을 사용할 수 있습니다.
+
+노멀 텍스처(보라색인 것)를 사용하는 경우, 각 픽셀의 빨강, 초록, 파랑 채널에 대한 정확한 값을 원할 것이므로, 무손실 압축이 값을 보존하는 png를 사용해야 합니다.
+
+## 텍스처 찾기
+
+안타깝게도, 완벽한 텍스처를 찾는 것은 항상 어렵습니다. 많은 웹사이트가 있지만, 텍스처가 항상 적합하지 않거나 지불해야 할 수도 있습니다.
+
+웹에서 검색하는 것부터 시작하는 것이 좋습니다. 여기 제가 자주 방문하는 몇몇 웹사이트가 있습니다.
+
+* [poliigon.com](http://poliigon.com/)
+* [3dtextures.me](http://3dtextures.me/)
+* [arroway-textures.ch](http://arroway-textures.ch/')
+
+개인적인 용도가 아닌 경우 텍스처를 사용할 권리가 있는지 항상 확인하세요.
+
+또한 Photoshop이나 Substance Designer와 같은 소프트웨어를 사용해 사진과 2D 소프트웨어로 직접 만들거나 절차적 텍스처를 생성할 수도 있습니다.
