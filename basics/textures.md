@@ -307,3 +307,90 @@ console.log(geometry.attributes.uv)
 3D 소프트웨어를 사용하여 기하학적 형태를 만들고 있다면, UV 언랩핑도 해야 합니다.
 
 <figure><img src="https://threejs-journey.com/assets/lessons/11/010.png" alt="" width="375"><figcaption></figcaption></figure>
+
+걱정하지 마세요; 대부분의 3D 소프트웨어에는 자동 언랩핑 기능이 있어 필요한 작업을 수행할 수 있습니다.
+
+## 텍스처 변형하기
+
+우리의 큐브와 하나의 텍스처로 돌아가서 우리가 그 텍스처에 적용할 수 있는 변형의 종류를 살펴봅시다.
+
+### Repeat
+
+repeat 속성을 사용하여 텍스처를 반복할 수 있습니다. 이는 Vector2이므로 x와 y 속성을 가집니다.
+
+이 속성들을 변경해 보세요:
+
+```javascript
+const colorTexture = textureLoader.load('/textures/door/color.jpg')
+colorTexture.colorSpace = THREE.SRGBColorSpace
+colorTexture.repeat.x = 2
+colorTexture.repeat.y = 3
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/011.png" alt="" width="375"><figcaption></figcaption></figure>
+
+보시다시피, 텍스처가 반복되는 것이 아니라 더 작아지고, 마지막 픽셀이 늘어나 보입니다.
+
+이는 기본적으로 텍스처가 자체적으로 반복되도록 설정되어 있지 않기 때문입니다. 이를 변경하려면, wrapS와 wrapT 속성을 THREE.RepeatWrapping 상수를 사용하여 업데이트해야 합니다.
+
+* wrapS는 x축을 위한 것입니다.
+* wrapT는 y축을 위한 것입니다.
+
+```javascript
+colorTexture.wrapS = THREE.RepeatWrapping
+colorTexture.wrapT = THREE.RepeatWrapping
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/012.png" alt="" width="375"><figcaption></figcaption></figure>
+
+THREE.MirroredRepeatWrapping을 사용하여 방향을 번갈아 가며 반복할 수도 있습니다:
+
+```javascript
+colorTexture.wrapS = THREE.MirroredRepeatWrapping
+colorTexture.wrapT = THREE.MirroredRepeatWrapping
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/013.png" alt="" width="375"><figcaption></figcaption></figure>
+
+### Offset
+
+offset 속성을 사용하여 텍스처를 오프셋할 수도 있습니다. 이것 역시 Vector2로서 x와 y 속성을 가집니다. 이들을 변경하는 것은 단순히 UV 좌표를 오프셋합니다:
+
+```javascript
+colorTexture.offset.x = 0.5
+colorTexture.offset.y = 0.5
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/014.png" alt="" width="375"><figcaption></figcaption></figure>
+
+### Rotation
+
+rotation 속성을 사용하여 텍스처를 회전시킬 수 있습니다. 이는 라디안 단위의 각도에 해당하는 단순한 숫자입니다:
+
+```javascript
+colorTexture.rotation = Math.PI * 0.25
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/015.png" alt="" width="375"><figcaption></figcaption></figure>
+
+offset과 repeat 속성을 제거하면, 회전이 큐브 면의 왼쪽 하단 모서리를 중심으로 발생하는 것을 볼 수 있습니다.
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/016.png" alt="" width="375"><figcaption></figcaption></figure>
+
+사실, 그것은 0, 0 UV 좌표입니다. 회전의 중심점을 변경하고 싶다면, center 속성을 사용하여 변경할 수 있습니다. 이것도 Vector2입니다:
+
+```javascript
+colorTexture.rotation = Math.PI * 0.25
+colorTexture.center.x = 0.5
+colorTexture.center.y = 0.5
+```
+
+<figure><img src="https://threejs-journey.com/assets/lessons/11/017.png" alt="" width="375"><figcaption></figcaption></figure>
+
+### Filtering and Mipmapping&#x20;
+
+이는 필터링과 밉맵핑(mipmapping) 때문입니다.
+
+밉맵핑은 텍스처의 반으로 줄인 작은 버전을 계속 만드는 기술로, 1x1 텍스처를 얻을 때까지 반복합니다. 이러한 모든 텍스처 변형들은 GPU에 전송되며, GPU는 가장 적절한 버전의 텍스처를 선택합니다.
+
+Three.js와 GPU는 이미 이 모든 것을 처리하고 있으며, 사용할 필터 알고리즘을 설정하기만 하면 됩니다. 필터 알고리즘에는 두 가지 유형이 있습니다: 축소 필터(minification filter)와 확대 필터(magnification filter).
